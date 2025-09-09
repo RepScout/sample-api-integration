@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Cart</title>
+</head>
+<body>
+    <h1>Candidates:</h1>
+    <ul>
+        <% candidates.forEach(candidate => { %>
+            <li>
+              <form action="/assignment.start" method="post">
+                <!-- We are just using the first assignment template for now -->
+                <input type="text" name="assignment_type_id" placeholder="Assignment Template ID" value="<%= assignmentTemplates[0].assignment_type_id %>" hidden>
+                <input type="text" name="candidate_name" placeholder="Candidate Name" value="<%= candidate.name %>">
+                <input type="text" name="candidate_email" placeholder="Candidate Email" value="<%= candidate.email %>">
+                <input type="submit" value="Start Assignment">
+              </form>
+            </li>
+        <% }); %>
+    </ul>
+
+    <h3>Other Assignment Templates</h3>
+    <ul>
+        <% assignmentTemplates.forEach(template => { %>
+            <li><%= template.name %></li>
+        <% }); %>
+    </ul>
+</body>
+</html>
