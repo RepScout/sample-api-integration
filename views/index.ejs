@@ -6,15 +6,26 @@
     <title>Shopping Cart</title>
 </head>
 <body>
+    <% if (activeAssignments.length > 0) { %>
+    <h1>Active Assignments:</h1>
+    <ul>
+        <% activeAssignments.forEach(assignment => { %>
+            <li><%= assignment.campaign_name %> - <%= assignment.assignment_status %> - Score: <%= assignment.assignment_score %></li>
+        <% }); %>
+    </ul>
+    <% } %>
     <h1>Candidates:</h1>
     <ul>
         <% candidates.forEach(candidate => { %>
             <li>
               <form action="/assignment.start" method="post">
                 <!-- We are just using the first assignment template for now -->
-                <input type="text" name="assignment_type_id" placeholder="Assignment Template ID" value="<%= assignmentTemplates[0].assignment_type_id %>" hidden>
+                <label for="candidate_name">Candidate Name: </label> 
                 <input type="text" name="candidate_name" placeholder="Candidate Name" value="<%= candidate.name %>">
+                <label for="candidate_email">Candidate Email: </label>
                 <input type="text" name="candidate_email" placeholder="Candidate Email" value="<%= candidate.email %>">
+                <label for="assignment_type_id">Assignment Template ID: </label>
+                <input type="text" name="assignment_type_id" placeholder="Assignment Template ID" value="<%= assignmentTemplates[0].assignment_type_id %>">
                 <input type="submit" value="Start Assignment">
               </form>
             </li>
@@ -24,7 +35,7 @@
     <h3>Other Assignment Templates</h3>
     <ul>
         <% assignmentTemplates.forEach(template => { %>
-            <li><%= template.name %></li>
+            <li><%= template.name %> - <%= template.assignment_type_id %></li>
         <% }); %>
     </ul>
 </body>
