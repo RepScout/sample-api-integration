@@ -13,7 +13,9 @@ This demo application showcases:
 ## Features
 
 - **Assignment Template Listing**: Displays available assignment templates from your RepScout account
-- **Assignment Creation**: Creates new assignments via the RepScout API then automaticaly redirects
+- **Assignment Creation**: Creates new assignments via the RepScout API then automatically redirects
+- **Webhook Support**: Accepts assignment status updates from RepScout via webhook endpoints
+- **Active Assignments Tracking**: Displays real-time status of active assignments with scores and campaign information
 
 ## Prerequisites
 
@@ -66,6 +68,8 @@ npm start
 
 5. You'll be automatically redirected to the assignment URL
 
+6. The application will track active assignments and display their status, scores, and campaign information in real-time
+
 ## API Endpoints
 
 ### GET /
@@ -82,9 +86,22 @@ Creates a new assignment for a candidate.
 - `candidate_name`: Name of the candidate
 - `candidate_email`: Email address of the candidate
 
+### POST /assignment.update
+
+Webhook endpoint that receives assignment status updates from RepScout. This endpoint is secured with Basic Authentication using your RepScout API key.
+
+**Request Body:**
+
+- `assignment_id`: The ID of the assignment being updated
+- `assignment_status`: The new status of the assignment
+
+**Authentication:**
+
+This endpoint requires Basic Authentication with your RepScout API key. The webhook will automatically update the assignment status in the active assignments list.
+
 ## RepScout API Integration
 
-This demo uses two RepScout API endpoints:
+This demo uses three RepScout API endpoints:
 
 ### 1. Assignment Templates (`/assignment.list`)
 
@@ -94,10 +111,40 @@ Fetches available assignment templates from your RepScout account.
 
 Creates a new assignment for a candidate and returns the assignment URL.
 
+### 3. Assignment Update Webhook (`/assignment.update`)
+
+Receives real-time updates from RepScout when assignment statuses change. This enables your application to stay synchronized with assignment progress, scores, and completion status.
+
+## Webhook Setup
+
+To enable real-time assignment updates, you need to configure your RepScout account to send webhook notifications to your application:
+
+1. **Deploy your application** to a publicly accessible URL (e.g., using services like Heroku, Railway, or ngrok for local development)
+
+2. **Configure the webhook URL** in your RepScout account settings:
+
+   - Webhook URL: `https://your-domain.com/assignment.update`
+   - Authentication: Basic Auth with your RepScout API key
+
+3. **For local development**, you can use ngrok to expose your local server:
+
+   ```bash
+   # Install ngrok (if not already installed)
+   npm install -g ngrok
+
+   # Expose your local server
+   ngrok http 3000
+
+   # Use the provided HTTPS URL as your webhook endpoint
+   ```
+
+4. **Test the webhook** by creating an assignment and monitoring the active assignments section for real-time updates
+
 ## Project Structure
 
 ```
 ├── index.js          # Main Express application
+├── authenticate.js   # Authentication middleware for webhook security
 ├── data.js           # Sample candidate data
 ├── views/
 │   └── index.ejs     # Main HTML template
