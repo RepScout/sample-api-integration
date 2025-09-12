@@ -3,14 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shopping Cart</title>
+    <title>RepScout Sample API Integration</title>
 </head>
 <body>
     <% if (activeAssignments.length > 0) { %>
     <h1>Active Assignments:</h1>
     <ul>
         <% activeAssignments.forEach(assignment => { %>
-            <li><%= assignment.campaign_name %> - <%= assignment.assignment_status %> - Score: <%= assignment.assignment_score %></li>
+            <li>
+                <div>
+                    <h3>Name: <%= assignment.campaign_name %></h3>
+                    <p>Status: <%= assignment.assignment_status %></p>
+                    <p>Score: <%= assignment.assignment_score %></p>
+                    <p>Feedback: <%= assignment.assignment_feedback %></p>
+                </div>
+                <ul>
+                    <% assignment.assessments.forEach(assessment => { %>
+                        <li>
+                            <h5><%= assessment.assessment_name %></h5>
+                            <p>Status: <%= assessment.assessment_status %></p>
+                            <p>Score: <%= assessment.assessment_score %></p>
+                            <p>Feedback: <%= assessment.assessment_feedback %></p>
+                        </li>
+                    <% }); %>
+                </ul>
+            </li>
         <% }); %>
     </ul>
     <% } %>

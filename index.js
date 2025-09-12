@@ -75,7 +75,13 @@ app.post("/assignment.start", urlencodedParser, async (req, res) => {
 
 // Accepts assignment update requests from RepScout
 app.post("/assignment.update", jsonParser, authenticate, async (req, res) => {
-  const { assignment_id, assignment_status } = req.body;
+  const {
+    assignment_id,
+    assignment_status,
+    assignment_score,
+    assignment_feedback,
+    assessments,
+  } = req.body;
 
   const assignment = activeAssignments.find(
     (assignment) => assignment_id === assignment.assignment_id
@@ -89,6 +95,9 @@ app.post("/assignment.update", jsonParser, authenticate, async (req, res) => {
   }
 
   assignment.assignment_status = assignment_status;
+  assignment.assignment_score = assignment_score;
+  assignment.assignment_feedback = assignment_feedback;
+  assignment.assessments = assessments;
 
   return res.status(200).json({ success: true });
 });
